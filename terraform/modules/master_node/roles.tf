@@ -28,10 +28,10 @@ resource "aws_iam_role" "bootstrap_role" {
 EOF
 }
 
-resource "aws_iam_policy" "bootstrap_volumes" {
-  name        = "${var.cluster_name}-master-${var.number}-bootstrap-volumes"
+resource "aws_iam_policy" "bootstrap_resources" {
+  name        = "${var.cluster_name}-master-${var.number}-bootstrap-resources"
   path        = "/"
-  description = "${var.cluster_name}-master-${var.number}-bootstrap-volumes"
+  description = "${var.cluster_name}-master-${var.number}-bootstrap-resources"
 
   policy = <<EOF
 {
@@ -62,15 +62,22 @@ resource "aws_iam_policy" "bootstrap_volumes" {
                 "ec2:AttachVolume"
             ],
             "Resource": "arn:aws:ec2:*:*:volume/*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "ec2:AssociateAddress"
+            ],
+            "Resource": "*"
         }
     ]
 }
 EOF
 }
 
-resource "aws_iam_policy_attachment" "bootstrap_volumes" {
-  name       = "${var.cluster_name}-master-${var.number}-bootstrap-volumes"
-  policy_arn = "${aws_iam_policy.bootstrap_volumes.arn}"
+resource "aws_iam_policy_attachment" "bootstrap_resources" {
+  name       = "${var.cluster_name}-master-${var.number}-bootstrap-resources"
+  policy_arn = "${aws_iam_policy.bootstrap_resources.arn}"
 
   roles = [
     "${aws_iam_role.bootstrap_role.name}",
