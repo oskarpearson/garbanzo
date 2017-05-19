@@ -11,6 +11,12 @@ resource "aws_autoscaling_group" "master" {
   launch_configuration = "${aws_launch_configuration.master.name}"
 
   tag {
+    key                 = "Name"
+    value = "${var.cluster_name}-master-${var.number}"
+    propagate_at_launch = true
+  }
+
+  tag {
     key                 = "kubernetes"
     value               = "true"
     propagate_at_launch = true
@@ -51,10 +57,13 @@ resource "aws_launch_configuration" "master" {
   instance_type = "${var.instance_type}"
   key_name      = "${var.ssh_key_name}"
 
+  iam_instance_profile = "${aws_iam_instance_profile.master_instance_profile.id}"
+
   security_groups = ["${var.security_groups}"]
+
+  user_data = "${file("${path.module}/user_data.sh")}"
 
   lifecycle {
     create_before_destroy = true
   }
 }
-
