@@ -12,7 +12,7 @@ resource "aws_autoscaling_group" "master" {
 
   tag {
     key                 = "Name"
-    value = "${var.cluster_name}-master-${var.number}"
+    value               = "${var.cluster_name}-master-${var.number}"
     propagate_at_launch = true
   }
 
@@ -51,6 +51,14 @@ data "aws_ami" "ubuntu" {
   owners = ["099720109477"] # Canonical
 }
 
+data "template_file" "user_data" {
+  template = "${file("${path.module}/user_data.tpl")}"
+
+  vars {
+    elastic_ip = "${aws_eip.master.public_ip}"
+  }
+}
+
 resource "aws_launch_configuration" "master" {
   name          = "${var.cluster_name}-master-${var.number}"
   image_id      = "${data.aws_ami.ubuntu.id}"
@@ -61,7 +69,7 @@ resource "aws_launch_configuration" "master" {
 
   security_groups = ["${var.security_groups}"]
 
-  user_data = "${file("${path.module}/user_data.sh")}"
+  user_data = "${data.template_file.user_data.rendered}"
 
   lifecycle {
     create_before_destroy = true
