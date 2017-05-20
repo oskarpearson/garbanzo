@@ -5,7 +5,7 @@ set -e
 set -o pipefail
 
 apt-get update
-apt-get -y upgrade
+DEBIAN_FRONTEND=noninteractive apt-get -y upgrade
 apt-get -y install jq python unzip
 
 cd /tmp
