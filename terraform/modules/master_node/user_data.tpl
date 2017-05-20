@@ -24,4 +24,4 @@ EVENTS_VOLUME_ID=$(aws ec2 describe-volumes --region=$${REGION} --filters "Name=
 aws ec2 attach-volume --region=$${REGION} --instance-id=$${INSTANCE_ID} --volume-id=$${MAIN_VOLUME_ID} --device=/dev/xvdg
 aws ec2 attach-volume --region=$${REGION} --instance-id=$${INSTANCE_ID} --volume-id=$${EVENTS_VOLUME_ID} --device=/dev/xvdh
 
-aws ec2 associate-address --instance-id=$${INSTANCE_ID} --public-ip={{ elastic_ip }}
+aws ec2 associate-address --region=$${REGION} --instance-id=$${INSTANCE_ID} --public-ip={{ elastic_ip }}
