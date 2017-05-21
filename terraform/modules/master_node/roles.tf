@@ -77,12 +77,29 @@ resource "aws_iam_policy" "bootstrap_resources" {
         {
             "Effect": "Allow",
             "Action": [
-                "ec2:DescribeIamInstanceProfileAssociations",
-                "ec2:AssociateIamInstanceProfile",
-                "ec2:ReplaceIamInstanceProfileAssociation",
-                "iam:PassRole"
+                "ec2:DescribeIamInstanceProfileAssociations"
             ],
             "Resource": "*"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "ec2:AssociateIamInstanceProfile",
+                "ec2:ReplaceIamInstanceProfileAssociation"
+            ],
+            "Resource": "arn:aws:ec2:*:*:instance/*",
+            "Condition": {
+                "StringEquals": {
+                    "ec2:ResourceTag/Name": "${var.cluster_name}-master-${var.number}"
+                }
+            }
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+                "iam:PassRole"
+            ],
+            "Resource": "${aws_iam_role.running_role.arn}"
         },
         {
             "Effect": "Allow",
