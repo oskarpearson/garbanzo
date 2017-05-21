@@ -1,0 +1,94 @@
+{
+  "variables": {
+    "ami_build_number": "UNKNOWN",
+    "ami_prefix": "Garbanzo Community AMI",
+    "ami_ubuntu_version": "Ubuntu 16.04 LTS AMD64",
+    "kube_version": "v1.6.4",
+    "aws_region": "eu-west-1",
+    "rootfs_volume_size": "40",
+    "rootfs_volume_type": "gp2",
+    "ssh_username": "ubuntu"
+  },
+  "builders": [
+    {
+      "ami_name": "{{user `ami_prefix`}} - ubuntu-xenial-16.04-amd64-server-{{user `kube_version`}} - {{user `ami_build_number`}} - {{isotime \"2006-01-02 15:04:05\" | clean_ami_name}}",
+      "instance_type": "m3.medium",
+      "launch_block_device_mappings": [
+        {
+          "delete_on_termination": true,
+          "device_name": "/dev/sda1",
+          "volume_size": "{{user `rootfs_volume_size`}}",
+          "volume_type": "{{user `rootfs_volume_type`}}"
+        }
+      ],
+      "region": "{{user `aws_region`}}",
+      "source_ami_filter": {
+        "filters": {
+          "name": "*ubuntu-xenial-16.04-amd64-server-*",
+          "root-device-type": "ebs",
+          "virtualization-type": "hvm"
+        },
+        "most_recent": true,
+        "owners": ["099720109477"]
+      },
+      "ssh_username": "{{user `ssh_username`}}",
+      "ssh_file_transfer_method": "sftp",
+      "ssh_pty": true,
+      "tags": {
+        "kube_version": "{{user `kube_version`}}",
+        "ubuntu_version": "ubuntu-xenial-16.04-amd64"
+      },
+      "type": "amazon-ebs"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "while [ ! -f /var/lib/cloud/instance/boot-finished ]; do echo 'Waiting for cloud-init...'; sleep 1; done"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "./scripts/ubuntu-xenial-prep.sh",
+      "destination": "/home/ubuntu/ubuntu-xenial-prep.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo /bin/bash /home/ubuntu/ubuntu-xenial-prep.sh",
+        "rm /home/ubuntu/ubuntu-xenial-prep.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "./scripts/pull-docker-containers.sh",
+      "destination": "/home/ubuntu/pull-docker-containers.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "while [ ! -f /var/run/docker.sock ]; do echo 'Waiting for docker to start...'; sleep 1; done"
+      ]
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo /bin/bash /home/ubuntu/pull-docker-containers.sh {{user `kube_version`}}",
+        "rm /home/ubuntu/pull-docker-containers.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "./scripts/ubuntu-xenial-clean.sh",
+      "destination": "/home/ubuntu/ubuntu-xenial-clean.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo /bin/bash /home/ubuntu/ubuntu-xenial-clean.sh",
+        "rm /home/ubuntu/ubuntu-xenial-clean.sh"
+      ]
+    }
+  ]
+}
