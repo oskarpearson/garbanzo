@@ -67,6 +67,11 @@ resource "aws_launch_configuration" "master" {
   instance_type = "${var.instance_type}"
   key_name      = "${var.ssh_key_name}"
 
+  # We don't need a public IP address here because we automatically attach an
+  # elastic IP via the userdata.tpl file. This gives us a static address that
+  # the master will always use
+  associate_public_ip_address = "false"
+
   iam_instance_profile = "${aws_iam_instance_profile.master_instance_profile.id}"
 
   security_groups = ["${var.security_groups}"]
