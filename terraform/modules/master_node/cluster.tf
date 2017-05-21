@@ -40,7 +40,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["ubuntu/images/hvm-ssd/ubuntu-xenial-16.04-amd64-server-*"]
+    values = ["*ubuntu-xenial-16.04-amd64-server-v1.6.4 - *"]
   }
 
   filter {
@@ -48,7 +48,7 @@ data "aws_ami" "ubuntu" {
     values = ["hvm"]
   }
 
-  owners = ["099720109477"] # Canonical
+  owners = ["760961392368"] # Garbanzo Project
 }
 
 data "template_file" "user_data" {
