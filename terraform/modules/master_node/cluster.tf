@@ -55,7 +55,8 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/user_data.tpl")}"
 
   vars {
-    elastic_ip = "${aws_eip.master.public_ip}"
+    elastic_ip          = "${aws_eip.master.public_ip}"
+    running_profile_arn = "${aws_iam_instance_profile.master_instance_running_profile.arn}"
   }
 }
 
