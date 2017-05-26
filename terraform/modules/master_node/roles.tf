@@ -1,5 +1,5 @@
 resource "aws_iam_instance_profile" "master_instance_profile" {
-  name = "${var.cluster_name}-master-${var.number}-instance-profile"
+  name = "${var.cluster_name}-master-${var.master_id}-boot-profile"
 
   role = "${aws_iam_role.bootstrap_role.name}"
 
@@ -9,7 +9,7 @@ resource "aws_iam_instance_profile" "master_instance_profile" {
 }
 
 resource "aws_iam_instance_profile" "master_instance_running_profile" {
-  name = "${var.cluster_name}-master-${var.number}-instance-running-profile"
+  name = "${var.cluster_name}-master-${var.master_id}-running-profile"
 
   role = "${aws_iam_role.running_role.name}"
 
@@ -19,7 +19,7 @@ resource "aws_iam_instance_profile" "master_instance_running_profile" {
 }
 
 resource "aws_iam_role" "running_role" {
-  name = "${var.cluster_name}-master-${var.number}-running-role"
+  name = "${var.cluster_name}-master-${var.master_id}-running-role"
 
   assume_role_policy = <<EOF
 {
@@ -39,7 +39,7 @@ EOF
 }
 
 resource "aws_iam_role" "bootstrap_role" {
-  name = "${var.cluster_name}-master-${var.number}-bootstrap-role"
+  name = "${var.cluster_name}-master-${var.master_id}-bootstrap-role"
 
   assume_role_policy = <<EOF
 {
@@ -59,9 +59,9 @@ EOF
 }
 
 resource "aws_iam_policy" "bootstrap_resources" {
-  name        = "${var.cluster_name}-master-${var.number}-bootstrap-resources"
+  name        = "${var.cluster_name}-master-${var.master_id}-bootstrap-resources"
   path        = "/"
-  description = "${var.cluster_name}-master-${var.number}-bootstrap-resources"
+  description = "${var.cluster_name}-master-${var.master_id}-bootstrap-resources"
 
   policy = <<EOF
 {
@@ -90,7 +90,7 @@ resource "aws_iam_policy" "bootstrap_resources" {
             "Resource": "arn:aws:ec2:*:*:instance/*",
             "Condition": {
                 "StringEquals": {
-                    "ec2:ResourceTag/Name": "${var.cluster_name}-master-${var.number}"
+                    "ec2:ResourceTag/Name": "${var.cluster_name}-master-${var.master_id}"
                 }
             }
         },
@@ -109,7 +109,7 @@ resource "aws_iam_policy" "bootstrap_resources" {
             "Resource": "arn:aws:ec2:*:*:instance/*",
             "Condition": {
                 "StringEquals": {
-                    "ec2:ResourceTag/Name": "${var.cluster_name}-master-${var.number}"
+                    "ec2:ResourceTag/Name": "${var.cluster_name}-master-${var.master_id}"
                 }
             }
         },
@@ -133,7 +133,7 @@ EOF
 }
 
 resource "aws_iam_policy_attachment" "bootstrap_resources" {
-  name       = "${var.cluster_name}-master-${var.number}-bootstrap-resources"
+  name       = "${var.cluster_name}-master-${var.master_id}-bootstrap-resources"
   policy_arn = "${aws_iam_policy.bootstrap_resources.arn}"
 
   roles = [

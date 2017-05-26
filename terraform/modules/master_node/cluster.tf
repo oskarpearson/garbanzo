@@ -1,6 +1,11 @@
 resource "aws_autoscaling_group" "master" {
+  depends_on = [
+    "aws_ebs_volume.main",
+    "aws_ebs_volume.events",
+  ]
+
   availability_zones = ["${var.availability_zone}"]
-  name               = "${var.cluster_name}-master-${var.number}"
+  name               = "${var.cluster_name}-master-${var.master_id}"
   max_size           = 1
   min_size           = 1
 
@@ -9,10 +14,12 @@ resource "aws_autoscaling_group" "master" {
   desired_capacity = 1
 
   launch_configuration = "${aws_launch_configuration.master.name}"
+  load_balancers       = ["${var.load_balancer_ids}"]
+  vpc_zone_identifier  = ["${var.subnet_id}"]
 
   tag {
     key                 = "Name"
-    value               = "${var.cluster_name}-master-${var.number}"
+    value               = "${var.cluster_name}-master-${var.master_id}"
     propagate_at_launch = true
   }
 
@@ -29,8 +36,8 @@ resource "aws_autoscaling_group" "master" {
   }
 
   tag {
-    key                 = "master_number"
-    value               = "${var.number}"
+    key                 = "master_id"
+    value               = "${var.master_id}"
     propagate_at_launch = true
   }
 }
@@ -55,22 +62,21 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/user_data.tpl")}"
 
   vars {
-    master_number       = "${var.number}"
+    master_id           = "${var.master_id}"
     elastic_ip          = "${aws_eip.master.public_ip}"
     running_profile_arn = "${aws_iam_instance_profile.master_instance_running_profile.arn}"
   }
 }
 
 resource "aws_launch_configuration" "master" {
-  name          = "${var.cluster_name}-master-${var.number}"
+  name_prefix   = "${var.cluster_name}-master-${var.master_id}"
   image_id      = "${data.aws_ami.ubuntu.id}"
   instance_type = "${var.instance_type}"
   key_name      = "${var.ssh_key_name}"
 
-  # We don't need a public IP address here because we automatically attach an
-  # elastic IP via the userdata.tpl file. This gives us a static address that
-  # the master will always use
-  associate_public_ip_address = "false"
+  # FIXME: We currently need a temporary public IP address for the boot process.
+  # This is swapped out with the aws_eip.master.public_ip by the Userdata
+  associate_public_ip_address = "true"
 
   iam_instance_profile = "${aws_iam_instance_profile.master_instance_profile.id}"
 
