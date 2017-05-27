@@ -9,8 +9,7 @@ module "master_api_elb" {
 
   subnet_ids = [
     "${module.master_1_subnet.subnet_id}",
+    "${module.master_2_subnet.subnet_id}",
+    "${module.master_3_subnet.subnet_id}",
   ]
-
-  # "${module.master_2_subnet.subnet_id}",
-  # "${module.master_3_subnet.subnet_id}",
 }
