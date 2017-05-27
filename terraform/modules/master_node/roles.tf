@@ -133,6 +133,15 @@ resource "aws_iam_policy" "bootstrap_resources" {
               "ec2:AssociateAddress"
             ],
             "Resource": "*"
+        },
+        {
+          "Effect": "Allow",
+          "Action": [
+              "s3:GetObject"
+          ],
+          "Resource": [
+             "arn:aws:s3:::${var.ssl_key_bucket}/*"
+          ]
         }
     ]
 }

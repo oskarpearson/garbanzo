@@ -81,6 +81,12 @@
       ]
     },
     {
+      "type": "shell",
+      "inline": [
+        "while [ ! -e /var/run/docker.sock ]; do echo 'Waiting for docker to start...'; sleep 1; done"
+      ]
+    },
+    {
       "type": "file",
       "source": "./scripts/pull-docker-containers.sh",
       "destination": "/home/ubuntu/pull-docker-containers.sh"
@@ -88,14 +94,39 @@
     {
       "type": "shell",
       "inline": [
-        "while [ ! -e /var/run/docker.sock ]; do echo 'Waiting for docker to start...'; sleep 1; done"
+        "sudo /bin/bash /home/ubuntu/pull-docker-containers.sh {{user `kube_version`}}",
+        "rm /home/ubuntu/pull-docker-containers.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "./scripts/install-etcd.sh",
+      "destination": "/home/ubuntu/install-etcd.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo /bin/bash /home/ubuntu/install-etcd.sh",
+        "rm /home/ubuntu/install-etcd.sh"
       ]
     },
     {
       "type": "shell",
       "inline": [
-        "sudo /bin/bash /home/ubuntu/pull-docker-containers.sh {{user `kube_version`}}",
-        "rm /home/ubuntu/pull-docker-containers.sh"
+        "sudo mkdir -p /opt/garbanzo /opt/garbanzo/bin /opt/garbanzo/etc /opt/garbanzo/templates",
+        "sudo chown -R ubuntu:ubuntu /opt/garbanzo"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "./post_build_files/",
+      "destination": "/opt/garbanzo/"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo chown -R root:root /opt/garbanzo",
+        "sudo chmod 700 /opt/garbanzo"
       ]
     },
     {

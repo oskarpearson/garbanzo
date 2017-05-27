@@ -66,10 +66,14 @@ data "template_file" "user_data" {
   template = "${file("${path.module}/user_data.tpl")}"
 
   vars {
-    master_id           = "${var.master_id}"
+    cluster_name        = "${var.cluster_name}"
+    domain_name         = "${var.cluster_name}.${replace(data.aws_route53_zone.zone.name, "/.$$/", "")}"
     elastic_ip          = "${aws_eip.master.public_ip}"
-    hostname            = "master-${var.master_id}.${var.cluster_name}.${replace(data.aws_route53_zone.zone.name, "/.$$/", "")}"
+    hostname            = "master-${var.master_id}"
+    master_count        = "${var.master_count}"
+    master_id           = "${var.master_id}"
     running_profile_arn = "${aws_iam_instance_profile.master_instance_running_profile.arn}"
+    ssl_key_bucket      = "${var.ssl_key_bucket}"
   }
 }
 

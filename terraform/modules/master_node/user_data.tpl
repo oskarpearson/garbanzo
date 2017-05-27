@@ -5,12 +5,27 @@ set -e
 set -o pipefail
 
 # Set hostname
-echo "${hostname}" > /etc/hostname
+echo "${hostname}.${domain_name}" > /etc/hostname
 hostname -F /etc/hostname
 
 # gather running context
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 REGION=$(curl -Ss http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
+PRIVATE_IP=$(curl -s http://169.254.169.254/latest/meta-data/local-ipv4)
+
+# Write the master information to files
+echo "${cluster_name}" > /opt/garbanzo/etc/cluster_name
+echo "${domain_name}" > /opt/garbanzo/etc/domain_name
+echo "${master_count}" > /opt/garbanzo/etc/master_count
+echo "${master_id}" > /opt/garbanzo/etc/master_id
+echo "${ssl_key_bucket}" > /opt/garbanzo/etc/ssl_key_bucket
+
+echo "$${INSTANCE_ID}" > /opt/garbanzo/etc/instance_id
+echo "$${PRIVATE_IP}" > /opt/garbanzo/etc/private_ip
+
+chown -R root:root /opt/garbanzo/etc/
+chmod 700 /opt/garbanzo/etc/
+chmod 600 /opt/garbanzo/etc/*
 
 # Attach elastic IP
 aws ec2 associate-address --region=$${REGION} --instance-id=$${INSTANCE_ID} --public-ip=${elastic_ip}
