@@ -123,6 +123,13 @@ resource "aws_iam_policy" "bootstrap_resources" {
         {
             "Effect": "Allow",
             "Action": [
+              "kms:Decrypt"
+            ],
+            "Resource": "${var.kms_key_arn}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
               "ec2:AssociateAddress"
             ],
             "Resource": "*"

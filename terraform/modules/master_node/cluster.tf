@@ -69,7 +69,7 @@ data "template_file" "user_data" {
 }
 
 resource "aws_launch_configuration" "master" {
-  name_prefix   = "${var.cluster_name}-master-${var.master_id}"
+  name_prefix   = "${var.cluster_name}-master-${var.master_id}-"
   image_id      = "${data.aws_ami.ubuntu.id}"
   instance_type = "${var.instance_type}"
   key_name      = "${var.ssh_key_name}"
