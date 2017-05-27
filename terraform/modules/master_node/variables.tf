@@ -4,6 +4,7 @@ variable "master_id" {}
 variable "ssh_key_name" {}
 variable "subnet_id" {}
 variable "kms_key_arn" {}
+variable "route53_zone_id" {}
 
 variable "load_balancer_ids" {
   type = "list"

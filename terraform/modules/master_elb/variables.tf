@@ -1,4 +1,5 @@
 variable "cluster_name" {}
+variable "route53_zone_id" {}
 
 variable "subnet_ids" {
   type = "list"

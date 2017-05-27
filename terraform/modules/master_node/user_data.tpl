@@ -4,6 +4,10 @@ set -x
 set -e
 set -o pipefail
 
+# Set hostname
+echo "${hostname}" > /etc/hostname
+hostname -F /etc/hostname
+
 # gather running context
 INSTANCE_ID=$(curl http://169.254.169.254/latest/meta-data/instance-id)
 REGION=$(curl -Ss http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)

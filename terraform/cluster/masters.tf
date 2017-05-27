@@ -12,6 +12,7 @@ module "master_1_node" {
   cluster_name      = "${var.cluster_name}"
   master_id         = 1
   kms_key_arn       = "${var.kms_key_arn}"
+  route53_zone_id   = "${var.route53_zone_id}"
   availability_zone = "${var.availability_zones["1"]}"
   ssh_key_name      = "${var.ssh_key_name}"
   subnet_id         = "${module.master_1_subnet.subnet_id}"
@@ -33,6 +34,7 @@ module "master_2_node" {
   cluster_name      = "${var.cluster_name}"
   master_id         = 2
   kms_key_arn       = "${var.kms_key_arn}"
+  route53_zone_id   = "${var.route53_zone_id}"
   availability_zone = "${var.availability_zones["2"]}"
   ssh_key_name      = "${var.ssh_key_name}"
   subnet_id         = "${module.master_2_subnet.subnet_id}"
@@ -54,6 +56,7 @@ module "master_3_node" {
   cluster_name      = "${var.cluster_name}"
   master_id         = 3
   kms_key_arn       = "${var.kms_key_arn}"
+  route53_zone_id   = "${var.route53_zone_id}"
   availability_zone = "${var.availability_zones["3"]}"
   ssh_key_name      = "${var.ssh_key_name}"
   subnet_id         = "${module.master_3_subnet.subnet_id}"

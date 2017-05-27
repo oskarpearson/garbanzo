@@ -1,5 +1,6 @@
 variable "vpc_id" {}
 variable "cluster_name" {}
+variable "route53_zone_id" {}
 variable "ssh_key_name" {}
 variable "kms_key_arn" {}
 

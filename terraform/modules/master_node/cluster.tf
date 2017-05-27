@@ -58,12 +58,17 @@ data "aws_ami" "ubuntu" {
   owners = ["760961392368"] # Garbanzo Project
 }
 
+data "aws_route53_zone" "zone" {
+  zone_id = "${var.route53_zone_id}"
+}
+
 data "template_file" "user_data" {
   template = "${file("${path.module}/user_data.tpl")}"
 
   vars {
     master_id           = "${var.master_id}"
     elastic_ip          = "${aws_eip.master.public_ip}"
+    hostname            = "master-${var.master_id}.${var.cluster_name}.${replace(data.aws_route53_zone.zone.name, "/.$$/", "")}"
     running_profile_arn = "${aws_iam_instance_profile.master_instance_running_profile.arn}"
   }
 }
