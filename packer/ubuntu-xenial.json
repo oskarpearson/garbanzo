@@ -56,8 +56,28 @@
     {
       "type": "shell",
       "inline": [
-        "sudo /bin/bash /home/ubuntu/ubuntu-xenial-prep.sh",
+        "echo this may reboot - so the next step must use pause_before",
+        "sudo /bin/bash /home/ubuntu/ubuntu-xenial-prep.sh"
+      ]
+    },
+    {
+      "type": "shell",
+      "pause_before": "20s",
+      "inline": [
+        "echo cleaning up after possible reboot",
         "rm /home/ubuntu/ubuntu-xenial-prep.sh"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "./scripts/ubuntu-xenial-awscli.sh",
+      "destination": "/home/ubuntu/ubuntu-xenial-awscli.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo /bin/bash /home/ubuntu/ubuntu-xenial-awscli.sh",
+        "rm /home/ubuntu/ubuntu-xenial-awscli.sh"
       ]
     },
     {
@@ -68,7 +88,7 @@
     {
       "type": "shell",
       "inline": [
-        "while [ ! -f /var/run/docker.sock ]; do echo 'Waiting for docker to start...'; sleep 1; done"
+        "while [ ! -e /var/run/docker.sock ]; do echo 'Waiting for docker to start...'; sleep 1; done"
       ]
     },
     {

@@ -10,7 +10,7 @@ set -o pipefail
 KUBE_APT_KEY='https://packages.cloud.google.com/apt/doc/apt-key.gpg'
 KUBE_APT_REPO='deb http://apt.kubernetes.io/ kubernetes-xenial main'
 
-BASE_PACKAGES="python python-pip"
+BASE_PACKAGES="curl jq python python-pip unzip"
 KUBE_PACKAGES="docker.io kubelet kubeadm kubectl kubernetes-cni"
 
 export DEBIAN_FRONTEND=noninteractive
@@ -27,6 +27,7 @@ echo "${kubernetes_release_tag}" > /etc/kubernetes_community_ami_version
 apt-get update
 apt-get -o "Dpkg::Options::=--force-confnew" -qy dist-upgrade
 apt-get -o "Dpkg::Options::=--force-confnew" -qy install ${BASE_PACKAGES} ${KUBE_PACKAGES}
+apt-get -qy autoremove
 
 # If we need to, reboot so that we are on the latest kernel
 if [ -f /var/run/reboot-required ]; then
