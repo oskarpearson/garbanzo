@@ -37,8 +37,8 @@ aws ec2 associate-address --region=$${REGION} --instance-id=$${INSTANCE_ID} --pu
 sleep 20
 
 # attach EBS devices
-MAIN_VOLUME_ID=$(aws ec2 describe-volumes --region=$${REGION} --filters "Name=tag:Name,Values=kuberhacking-master-${master_id}-main" --query "Volumes[0].VolumeId" --output text)
-EVENTS_VOLUME_ID=$(aws ec2 describe-volumes --region=$${REGION} --filters "Name=tag:Name,Values=kuberhacking-master-${master_id}-events" --query "Volumes[0].VolumeId" --output text)
+MAIN_VOLUME_ID=$(aws ec2 describe-volumes --region=$${REGION} --filters "Name=tag:Name,Values=${cluster_name}-master-${master_id}-main" --query "Volumes[0].VolumeId" --output text)
+EVENTS_VOLUME_ID=$(aws ec2 describe-volumes --region=$${REGION} --filters "Name=tag:Name,Values=${cluster_name}-master-${master_id}-events" --query "Volumes[0].VolumeId" --output text)
 aws ec2 attach-volume --region=$${REGION} --instance-id=$${INSTANCE_ID} --volume-id=$${MAIN_VOLUME_ID} --device=/dev/xvdg
 aws ec2 attach-volume --region=$${REGION} --instance-id=$${INSTANCE_ID} --volume-id=$${EVENTS_VOLUME_ID} --device=/dev/xvdh
 
