@@ -40,5 +40,5 @@ aws ec2 attach-volume --region=$${REGION} --instance-id=$${INSTANCE_ID} --volume
 aws ec2 attach-volume --region=$${REGION} --instance-id=$${INSTANCE_ID} --volume-id=$${EVENTS_VOLUME_ID} --device=/dev/xvdh
 
 # assume restricted running role
-BOOTSTRAP_PROFILE_ASSOCIATION_ID=$(aws ec2 describe-iam-instance-profile-associations --region $${REGION} --filters Name=instance-id,Values=$${INSTANCE_ID} | jq -r .IamInstanceProfileAssociations[0].AssociationId)
-aws ec2 replace-iam-instance-profile-association --region $${REGION} --iam-instance-profile Arn=${running_profile_arn} --association-id $${BOOTSTRAP_PROFILE_ASSOCIATION_ID}
+# FIXME BOOTSTRAP_PROFILE_ASSOCIATION_ID=$(aws ec2 describe-iam-instance-profile-associations --region $${REGION} --filters Name=instance-id,Values=$${INSTANCE_ID} | jq -r .IamInstanceProfileAssociations[0].AssociationId)
+# FIXME aws ec2 replace-iam-instance-profile-association --region $${REGION} --iam-instance-profile Arn=${running_profile_arn} --association-id $${BOOTSTRAP_PROFILE_ASSOCIATION_ID}
