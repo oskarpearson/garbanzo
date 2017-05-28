@@ -5,13 +5,13 @@ Documentation=https://github.com/coreos
 [Service]
 ExecStart=/usr/bin/etcd \
   --name=master-${MASTER_ID} \
-  --cert-file=/etc/etcd/kubernetes.pem \
-  --key-file=/etc/etcd/kubernetes-key.pem \
-  --peer-cert-file=/etc/etcd/kubernetes.pem \
-  --peer-key-file=/etc/etcd/kubernetes-key.pem \
+  --cert-file=/etc/etcd/local-server.pem \
+  --key-file=/etc/etcd/local-server-key.pem \
+  --peer-cert-file=/etc/etcd/local-server.pem \
+  --peer-key-file=/etc/etcd/local-server-key.pem \
   --trusted-ca-file=/etc/etcd/ca.pem \
   --peer-trusted-ca-file=/etc/etcd/ca.pem \
-  --initial-advertise-peer-urls https://${HOSTNAME}:2380 \
+  --initial-advertise-peer-urls https://${PRIVATE_HOSTNAME}:2380 \
   --listen-peer-urls https://${PRIVATE_IP}:2380 \
   --listen-client-urls https://${PRIVATE_IP}:2379,http://127.0.0.1:2379 \
   --advertise-client-urls https://${PRIVATE_IP}:2379 \

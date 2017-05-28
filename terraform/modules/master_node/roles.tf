@@ -135,6 +135,20 @@ resource "aws_iam_policy" "bootstrap_resources" {
             "Resource": "*"
         },
         {
+            "Effect": "Allow",
+            "Action": [
+              "route53:ChangeResourceRecordSets"
+            ],
+            "Resource": "arn:aws:route53:::hostedzone/${var.route53_zone_id}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": [
+              "route53:GetChange"
+            ],
+            "Resource": "*"
+        },
+        {
           "Effect": "Allow",
           "Action": [
               "s3:GetObject"

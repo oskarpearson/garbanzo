@@ -111,6 +111,18 @@
       ]
     },
     {
+      "type": "file",
+      "source": "./scripts/install-cfssl.sh",
+      "destination": "/home/ubuntu/install-cfssl.sh"
+    },
+    {
+      "type": "shell",
+      "inline": [
+        "sudo /bin/bash /home/ubuntu/install-cfssl.sh",
+        "rm /home/ubuntu/install-cfssl.sh"
+      ]
+    },
+    {
       "type": "shell",
       "inline": [
         "sudo mkdir -p /opt/garbanzo /opt/garbanzo/bin /opt/garbanzo/etc /opt/garbanzo/templates",

@@ -1,0 +1,18 @@
+{
+    "Comment": "Dynamic Private IP Address",
+    "Changes": [
+        {
+            "Action": "UPSERT",
+            "ResourceRecordSet": {
+                "Name": "${PRIVATE_HOSTNAME}",
+                "Type": "A",
+                "TTL": 30,
+                "ResourceRecords": [
+                    {
+                        "Value": "${PRIVATE_IP}"
+                    }
+                ]
+            }
+        }
+    ]
+}

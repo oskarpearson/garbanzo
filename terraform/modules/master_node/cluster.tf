@@ -68,6 +68,7 @@ data "template_file" "user_data" {
   vars {
     cluster_name        = "${var.cluster_name}"
     domain_name         = "${var.cluster_name}.${replace(data.aws_route53_zone.zone.name, "/.$$/", "")}"
+    route53_zone_id     = "${var.route53_zone_id}"
     elastic_ip          = "${aws_eip.master.public_ip}"
     hostname            = "master-${var.master_id}"
     master_count        = "${var.master_count}"

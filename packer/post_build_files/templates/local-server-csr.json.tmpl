@@ -1,0 +1,22 @@
+{
+  "CN": "kubernetes",
+  "hosts": [
+    "${PRIVATE_HOSTNAME}",
+    "${PRIVATE_IP}",
+    "${PUBLIC_IP}",
+    "127.0.0.1"
+  ],
+  "key": {
+    "algo": "rsa",
+    "size": 2048
+  },
+  "names": [
+    {
+      "C": "GB",
+      "L": "London",
+      "O": "Kubernetes",
+      "OU": "Cluster",
+      "ST": "Greater London"
+    }
+  ]
+}
