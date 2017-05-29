@@ -44,7 +44,7 @@ ExecStart=/usr/bin/kube-apiserver \\
   --etcd-cafile=${SSL_DIR}/ca.pem \\
   --etcd-certfile=${SSL_DIR}/local-server.pem \\
   --etcd-keyfile=${SSL_DIR}/local-server-key.pem \\
-  --etcd-servers=${ETCD_CLUSTER_HOSTS} \\
+  --etcd-servers=${ETCD_CLUSTER_LIST} \\
   --event-ttl=1h \\
   --experimental-bootstrap-token-auth \\
   --insecure-bind-address=0.0.0.0 \\
@@ -81,3 +81,75 @@ sudo systemctl daemon-reload
 sudo systemctl enable kube-apiserver
 sudo systemctl start kube-apiserver
 sudo systemctl status kube-apiserver --no-pager
+
+
+
+
+
+
+
+CLUSTER_NAME=$(cat /opt/garbanzo/etc/cluster_name)
+SSL_DIR=/opt/garbanzo/ssl
+INTERNAL_IP=$(curl -sS http://169.254.169.254/latest/meta-data/local-ipv4)
+
+cat > kube-controller-manager.service <<EOF
+[Unit]
+Description=Kubernetes Controller Manager
+Documentation=https://github.com/garbanzo_docs_url_when_we_have_one?
+
+[Service]
+ExecStart=/usr/bin/kube-controller-manager \\
+  --address=0.0.0.0 \\
+  --allocate-node-cidrs=true \\
+  --cluster-cidr=10.200.0.0/16 \\
+  --cluster-name=${CLUSTER_NAME} \\
+  --cluster-signing-cert-file=${SSL_DIR}/ca.pem \\
+  --cluster-signing-key-file=${SSL_DIR}/ca-key.pem \\
+  --leader-elect=true \\
+  --master=http://${INTERNAL_IP}:8080 \\
+  --root-ca-file=${SSL_DIR}/ca.pem \\
+  --service-account-private-key-file=${SSL_DIR}/ca-key.pem \\
+  --service-cluster-ip-range=10.32.0.0/16 \\
+  --v=2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo mv kube-controller-manager.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable kube-controller-manager
+sudo systemctl start kube-controller-manager
+sudo systemctl status -l kube-controller-manager --no-pager
+
+
+
+
+
+
+INTERNAL_IP=$(curl -sS http://169.254.169.254/latest/meta-data/local-ipv4)
+
+cat > kube-scheduler.service <<EOF
+[Unit]
+Description=Kubernetes Scheduler
+Documentation=https://github.com/garbanzo_docs_url_when_we_have_one?
+
+[Service]
+ExecStart=/usr/bin/kube-scheduler \\
+  --leader-elect=true \\
+  --master=http://${INTERNAL_IP}:8080 \\
+  --v=2
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+EOF
+
+sudo mv kube-scheduler.service /etc/systemd/system/
+sudo systemctl daemon-reload
+sudo systemctl enable kube-scheduler
+sudo systemctl start kube-scheduler
+sudo systemctl status kube-scheduler --no-pager
