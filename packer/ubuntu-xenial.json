@@ -3,7 +3,7 @@
     "ami_build_number": "UNKNOWN",
     "ami_prefix": "Garbanzo Community AMI",
     "ami_ubuntu_version": "Ubuntu 16.04 LTS AMD64",
-    "kube_version": "v1.6.4",
+    "kube_version": "v1.6.1",
     "aws_region": "eu-west-1",
     "rootfs_volume_size": "40",
     "rootfs_volume_type": "gp2",
@@ -81,21 +81,15 @@
       ]
     },
     {
-      "type": "shell",
-      "inline": [
-        "while [ ! -e /var/run/docker.sock ]; do echo 'Waiting for docker to start...'; sleep 1; done"
-      ]
-    },
-    {
       "type": "file",
-      "source": "./scripts/pull-docker-containers.sh",
-      "destination": "/home/ubuntu/pull-docker-containers.sh"
+      "source": "./scripts/install-kubernetes.sh",
+      "destination": "/home/ubuntu/install-kubernetes.sh"
     },
     {
       "type": "shell",
       "inline": [
-        "sudo /bin/bash /home/ubuntu/pull-docker-containers.sh {{user `kube_version`}}",
-        "rm /home/ubuntu/pull-docker-containers.sh"
+        "sudo /bin/bash /home/ubuntu/install-kubernetes.sh {{user `kube_version`}}",
+        "rm /home/ubuntu/install-kubernetes.sh"
       ]
     },
     {

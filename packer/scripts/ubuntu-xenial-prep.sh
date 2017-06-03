@@ -11,7 +11,7 @@ KUBE_APT_KEY='https://packages.cloud.google.com/apt/doc/apt-key.gpg'
 KUBE_APT_REPO='deb http://apt.kubernetes.io/ kubernetes-xenial main'
 
 BASE_PACKAGES="curl jq python python-pip unzip"
-KUBE_PACKAGES="docker.io kubelet kubeadm kubectl kubernetes-cni"
+KUBE_PACKAGES="docker.io"
 
 export DEBIAN_FRONTEND=noninteractive
 
