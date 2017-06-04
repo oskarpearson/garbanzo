@@ -57,7 +57,7 @@ sed \
 echo systemctl daemon-reload
 echo systemctl enable kube-controller-manager
 echo systemctl start kube-controller-manager
-echo systemctl status -l kube-controller-manager --no-pager -l
+echo systemctl status kube-controller-manager --no-pager -l
 #
 # ################################################################################
 # # kube-scheduler
