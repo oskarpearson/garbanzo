@@ -40,10 +40,10 @@ sed \
   ${TEMPLATE_DIR}/kube-apiserver.service.tmpl > /etc/systemd/system/kube-apiserver.service
 
 # start and check API server status
-echo systemctl daemon-reload
-echo systemctl enable kube-apiserver
-echo systemctl start kube-apiserver
-echo systemctl status kube-apiserver --no-pager -l
+systemctl daemon-reload
+systemctl enable kube-apiserver
+systemctl start kube-apiserver
+systemctl status kube-apiserver --no-pager -l
 
 ################################################################################
 # kube-controller-manager
@@ -54,10 +54,10 @@ sed \
   -e "s#\${PRIVATE_IP}#${PRIVATE_IP}#" \
   -e "s#\${SSL_DIR}#${SSL_DIR}#" \
   ${TEMPLATE_DIR}/kube-controller-manager.service.tmpl > /etc/systemd/system/kube-controller-manager.service
-echo systemctl daemon-reload
-echo systemctl enable kube-controller-manager
-echo systemctl start kube-controller-manager
-echo systemctl status kube-controller-manager --no-pager -l
+systemctl daemon-reload
+systemctl enable kube-controller-manager
+systemctl start kube-controller-manager
+systemctl status kube-controller-manager --no-pager -l
 #
 # ################################################################################
 # # kube-scheduler
@@ -67,7 +67,7 @@ sed \
   -e "s#\${PRIVATE_IP}#${PRIVATE_IP}#" \
   ${TEMPLATE_DIR}/kube-scheduler.service.tmpl > /etc/systemd/system/kube-scheduler.service
 #
-echo systemctl daemon-reload
-echo systemctl enable kube-scheduler
-echo systemctl start kube-scheduler
-echo systemctl status kube-scheduler --no-pager -l
+systemctl daemon-reload
+systemctl enable kube-scheduler
+systemctl start kube-scheduler
+systemctl status kube-scheduler --no-pager -l

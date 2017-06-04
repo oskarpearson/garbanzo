@@ -46,6 +46,7 @@ aws ec2 attach-volume --region=$${REGION} --instance-id=$${INSTANCE_ID} --volume
 /opt/garbanzo/bin/bootstrap_route53.sh
 /opt/garbanzo/bin/bootstrap_ssl.sh
 /opt/garbanzo/bin/bootstrap_etcd.sh
+/opt/garbanzo/bin/bootstrap_kubernetes.sh
 
 # assume restricted running role
 # FIXME BOOTSTRAP_PROFILE_ASSOCIATION_ID=$(aws ec2 describe-iam-instance-profile-associations --region $${REGION} --filters Name=instance-id,Values=$${INSTANCE_ID} | jq -r .IamInstanceProfileAssociations[0].AssociationId)
