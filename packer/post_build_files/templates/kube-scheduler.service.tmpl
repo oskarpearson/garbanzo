@@ -5,7 +5,7 @@ Documentation=https://github.com/garbanzo_docs_url_when_we_have_one?
 [Service]
 ExecStart=/usr/local/bin/kube-scheduler \
   --leader-elect=true \
-  --master=http://${PRIVATE_IP}:8080 \
+  --master=http://127.0.0.1:8080 \
   --v=2
 Restart=on-failure
 RestartSec=5
