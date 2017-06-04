@@ -22,7 +22,7 @@ chmod 700 /var/lib/kubernetes
 
 declare -a ETCD_CLUSTER_HOSTS
 for i in $(seq 1 $MASTER_COUNT); do
-  ETCD_CLUSTER_HOSTS[i]="https://master-${i}-priv.${DOMAIN_NAME}:2380"
+  ETCD_CLUSTER_HOSTS[i]="https://master-${i}-priv.${DOMAIN_NAME}:2379"
 done
 ETCD_CLUSTER_LIST=$(IFS=, ; echo "${ETCD_CLUSTER_HOSTS[*]}")
 
@@ -45,7 +45,6 @@ echo systemctl enable kube-apiserver
 echo systemctl start kube-apiserver
 echo systemctl status kube-apiserver --no-pager -l
 
-
 ################################################################################
 # kube-controller-manager
 ################################################################################
@@ -55,7 +54,6 @@ sed \
   -e "s#\${PRIVATE_IP}#${PRIVATE_IP}#" \
   -e "s#\${SSL_DIR}#${SSL_DIR}#" \
   ${TEMPLATE_DIR}/kube-controller-manager.service.tmpl > /etc/systemd/system/kube-controller-manager.service
-
 echo systemctl daemon-reload
 echo systemctl enable kube-controller-manager
 echo systemctl start kube-controller-manager
