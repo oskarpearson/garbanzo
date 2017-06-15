@@ -28,10 +28,15 @@ module "workers" {
   cluster_name       = "${var.cluster_name}"
   security_groups    = ["${module.workers_security_group.security_group_id}"]
   ssh_key_name       = "${var.ssh_key_name}"
-  subnet_ids         = ["${module.worker_subnet_1.subnet_id},${module.worker_subnet_2.subnet_id},${module.worker_subnet_3.subnet_id}"]
   route53_zone_id    = "${var.route53_zone_id}"
   desired_capacity   = 1
   max_size           = 1
   min_size           = 1
   ssl_key_bucket     = "${var.ssl_key_bucket}"
+
+  subnet_ids = [
+    "${module.worker_subnet_1.subnet_id}",
+    "${module.worker_subnet_2.subnet_id}",
+    "${module.worker_subnet_3.subnet_id}",
+  ]
 }
