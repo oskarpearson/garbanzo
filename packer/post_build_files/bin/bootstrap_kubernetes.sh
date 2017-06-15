@@ -45,6 +45,9 @@ systemctl enable kube-apiserver
 systemctl start kube-apiserver
 systemctl status kube-apiserver --no-pager -l
 
+echo "Waiting for API to come up before trying to start other services..."
+sleep 10
+
 ################################################################################
 # kube-controller-manager
 ################################################################################

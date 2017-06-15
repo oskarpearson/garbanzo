@@ -3,7 +3,9 @@
     "ami_build_number": "UNKNOWN",
     "ami_prefix": "Garbanzo Community AMI",
     "ami_ubuntu_version": "Ubuntu 16.04 LTS AMD64",
-    "kube_version": "v1.6.4",
+    "kube_version": "v1.7.2",
+    "etcd_version": "v3.1.8",
+    "cni_version": "cni-amd64-0799f5732f2a11b329d9e3d51b9c8f2e3759f2ff",
     "aws_region": "eu-west-1",
     "rootfs_volume_size": "40",
     "rootfs_volume_type": "gp2",
@@ -88,7 +90,7 @@
     {
       "type": "shell",
       "inline": [
-        "sudo /bin/bash /home/ubuntu/install-kubernetes.sh {{user `kube_version`}}",
+        "sudo /bin/bash /home/ubuntu/install-kubernetes.sh {{user `kube_version`}} {{user `cni_version`}}",
         "rm /home/ubuntu/install-kubernetes.sh"
       ]
     },
@@ -100,7 +102,7 @@
     {
       "type": "shell",
       "inline": [
-        "sudo /bin/bash /home/ubuntu/install-etcd.sh",
+        "sudo /bin/bash /home/ubuntu/install-etcd.sh {{user `etcd_version`}}",
         "rm /home/ubuntu/install-etcd.sh"
       ]
     },

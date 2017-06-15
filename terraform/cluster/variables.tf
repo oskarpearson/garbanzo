@@ -12,3 +12,7 @@ variable "master_count" {
 variable "availability_zones" {
   type = "map"
 }
+
+variable "kubernetes_version" {
+  default = "v1.7.2"
+}

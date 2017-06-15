@@ -14,3 +14,7 @@ resource "aws_route53_record" "eip" {
   ttl     = "30"
   records = ["${aws_eip.master.public_ip}"]
 }
+
+output "master_elastic_ip" {
+  value = "${aws_eip.master.public_ip}"
+}

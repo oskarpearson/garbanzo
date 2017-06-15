@@ -9,7 +9,12 @@ if [ -z "${1}" ]; then
   exit 1
 fi
 
-FILE_LIST="kube-apiserver kube-controller-manager kube-scheduler kubectl"
+if [ -z "${2}" ]; then
+  echo "Need a CNI release file as the second command-line parameter"
+  exit 1
+fi
+
+FILE_LIST="kube-apiserver kube-controller-manager kube-scheduler kubectl kube-proxy kubelet"
 
 # download kubernetes binaries
 for FILE in ${FILE_LIST}; do
@@ -17,3 +22,8 @@ for FILE in ${FILE_LIST}; do
   chown root:root /usr/local/bin/${FILE}
   chmod 755 /usr/local/bin/${FILE}
 done
+
+
+# FIXME - move this to packer build time
+mkdir -p /opt/cni
+curl -sSL https://storage.googleapis.com/kubernetes-release/network-plugins/${2}.tar.gz | tar -C /opt/cni -zxvf -

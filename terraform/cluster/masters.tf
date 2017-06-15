@@ -8,18 +8,18 @@ module "master_1_subnet" {
 }
 
 module "master_1_node" {
-  source            = "../modules/master_node"
-  availability_zone = "${var.availability_zones["1"]}"
-  cluster_name      = "${var.cluster_name}"
-  kms_key_arn       = "${var.kms_key_arn}"
-  load_balancer_ids = ["${module.master_api_elb.master_kubernetes_api_elb_id}"]
-  master_count      = "3"
-  master_id         = "1"
-  route53_zone_id   = "${var.route53_zone_id}"
-  security_groups   = ["${module.master_security_group.security_group_id}"]
-  ssh_key_name      = "${var.ssh_key_name}"
-  ssl_key_bucket    = "${var.ssl_key_bucket}"
-  subnet_id         = "${module.master_1_subnet.subnet_id}"
+  source             = "../modules/master_node"
+  availability_zone  = "${var.availability_zones["1"]}"
+  cluster_name       = "${var.cluster_name}"
+  kms_key_arn        = "${var.kms_key_arn}"
+  master_count       = "3"
+  master_id          = "1"
+  route53_zone_id    = "${var.route53_zone_id}"
+  security_groups    = ["${module.master_security_group.security_group_id}"]
+  ssh_key_name       = "${var.ssh_key_name}"
+  ssl_key_bucket     = "${var.ssl_key_bucket}"
+  subnet_id          = "${module.master_1_subnet.subnet_id}"
+  kubernetes_version = "${var.kubernetes_version}"
 }
 
 module "master_2_subnet" {
@@ -32,18 +32,18 @@ module "master_2_subnet" {
 }
 
 module "master_2_node" {
-  source            = "../modules/master_node"
-  availability_zone = "${var.availability_zones["2"]}"
-  cluster_name      = "${var.cluster_name}"
-  kms_key_arn       = "${var.kms_key_arn}"
-  load_balancer_ids = ["${module.master_api_elb.master_kubernetes_api_elb_id}"]
-  master_count      = "3"
-  master_id         = "2"
-  route53_zone_id   = "${var.route53_zone_id}"
-  security_groups   = ["${module.master_security_group.security_group_id}"]
-  ssh_key_name      = "${var.ssh_key_name}"
-  ssl_key_bucket    = "${var.ssl_key_bucket}"
-  subnet_id         = "${module.master_2_subnet.subnet_id}"
+  source             = "../modules/master_node"
+  availability_zone  = "${var.availability_zones["2"]}"
+  cluster_name       = "${var.cluster_name}"
+  kms_key_arn        = "${var.kms_key_arn}"
+  master_count       = "3"
+  master_id          = "2"
+  route53_zone_id    = "${var.route53_zone_id}"
+  security_groups    = ["${module.master_security_group.security_group_id}"]
+  ssh_key_name       = "${var.ssh_key_name}"
+  ssl_key_bucket     = "${var.ssl_key_bucket}"
+  subnet_id          = "${module.master_2_subnet.subnet_id}"
+  kubernetes_version = "${var.kubernetes_version}"
 }
 
 module "master_3_subnet" {
@@ -56,16 +56,16 @@ module "master_3_subnet" {
 }
 
 module "master_3_node" {
-  source            = "../modules/master_node"
-  availability_zone = "${var.availability_zones["3"]}"
-  cluster_name      = "${var.cluster_name}"
-  kms_key_arn       = "${var.kms_key_arn}"
-  load_balancer_ids = ["${module.master_api_elb.master_kubernetes_api_elb_id}"]
-  master_count      = "3"
-  master_id         = "3"
-  route53_zone_id   = "${var.route53_zone_id}"
-  security_groups   = ["${module.master_security_group.security_group_id}"]
-  ssh_key_name      = "${var.ssh_key_name}"
-  ssl_key_bucket    = "${var.ssl_key_bucket}"
-  subnet_id         = "${module.master_3_subnet.subnet_id}"
+  source             = "../modules/master_node"
+  availability_zone  = "${var.availability_zones["3"]}"
+  cluster_name       = "${var.cluster_name}"
+  kms_key_arn        = "${var.kms_key_arn}"
+  master_count       = "3"
+  master_id          = "3"
+  route53_zone_id    = "${var.route53_zone_id}"
+  security_groups    = ["${module.master_security_group.security_group_id}"]
+  ssh_key_name       = "${var.ssh_key_name}"
+  ssl_key_bucket     = "${var.ssl_key_bucket}"
+  subnet_id          = "${module.master_3_subnet.subnet_id}"
+  kubernetes_version = "${var.kubernetes_version}"
 }

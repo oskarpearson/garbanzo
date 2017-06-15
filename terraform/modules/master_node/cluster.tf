@@ -14,24 +14,17 @@ resource "aws_autoscaling_group" "master" {
   desired_capacity = 1
 
   launch_configuration = "${aws_launch_configuration.master.name}"
-  load_balancers       = ["${var.load_balancer_ids}"]
   vpc_zone_identifier  = ["${var.subnet_id}"]
+
+  tag {
+    key                 = "KubernetesCluster"
+    value               = "${var.cluster_name}"
+    propagate_at_launch = true
+  }
 
   tag {
     key                 = "Name"
     value               = "${var.cluster_name}-master-${var.master_id}"
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "kubernetes"
-    value               = "true"
-    propagate_at_launch = true
-  }
-
-  tag {
-    key                 = "cluster_name"
-    value               = "${var.cluster_name}"
     propagate_at_launch = true
   }
 
@@ -47,7 +40,7 @@ data "aws_ami" "ubuntu" {
 
   filter {
     name   = "name"
-    values = ["*ubuntu-xenial-16.04-amd64-server-v1.6.4 - *"]
+    values = ["*ubuntu-xenial-16.04-amd64-server-${var.kubernetes_version} - *"]
   }
 
   filter {

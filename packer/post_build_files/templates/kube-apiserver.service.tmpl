@@ -35,7 +35,6 @@ ExecStart=/usr/local/bin/kube-apiserver \
   --service-node-port-range=30000-32767 \
   --tls-cert-file=${SSL_DIR}/local-server.pem \
   --tls-private-key-file=${SSL_DIR}/local-server-key.pem \
-  --token-auth-file=/var/lib/kubernetes/token.csv \
   --v=2
 Restart=on-failure
 RestartSec=5

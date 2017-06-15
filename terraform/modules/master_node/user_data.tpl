@@ -4,14 +4,16 @@ set -x
 set -e
 set -o pipefail
 
-# Set hostname
-echo "${hostname}.${domain_name}" > /etc/hostname
-hostname -F /etc/hostname
-
 # gather running context
 INSTANCE_ID=$(curl -sS http://169.254.169.254/latest/meta-data/instance-id)
 REGION=$(curl -sS http://169.254.169.254/latest/dynamic/instance-identity/document | jq -r .region)
 PRIVATE_IP=$(curl -sS http://169.254.169.254/latest/meta-data/local-ipv4)
+
+# Set hostname
+echo "${hostname}.${domain_name}" > /etc/hostname
+hostname -F /etc/hostname
+
+sed -i -e "s/^127.0.0.1.*/127.0.0.1 localhost ${hostname} ${hostname}.${domain_name}/" /etc/hosts
 
 # Write the master information to files
 echo "${cluster_name}" > /opt/garbanzo/etc/cluster_name

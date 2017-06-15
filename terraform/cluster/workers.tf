@@ -33,6 +33,7 @@ module "workers" {
   max_size           = 1
   min_size           = 1
   ssl_key_bucket     = "${var.ssl_key_bucket}"
+  kubernetes_version = "${var.kubernetes_version}"
 
   subnet_ids = [
     "${module.worker_subnet_1.subnet_id}",
