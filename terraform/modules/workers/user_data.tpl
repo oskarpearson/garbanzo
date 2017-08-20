@@ -30,8 +30,7 @@ chown -R root:root /opt/garbanzo/etc/
 chmod 700 /opt/garbanzo/etc/
 chmod 600 /opt/garbanzo/etc/*
 
-echo FIXME - modules/workers/user_data.tpl
-# /opt/garbanzo/bin/bootstrap_worker.sh
+/opt/garbanzo/bin/bootstrap_worker.sh
 
 # assume restricted running role
 # FIXME BOOTSTRAP_PROFILE_ASSOCIATION_ID=$(aws ec2 describe-iam-instance-profile-associations --region $${REGION} --filters Name=instance-id,Values=$${INSTANCE_ID} | jq -r .IamInstanceProfileAssociations[0].AssociationId)
