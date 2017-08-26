@@ -74,3 +74,36 @@ systemctl daemon-reload
 systemctl enable kube-scheduler
 systemctl start kube-scheduler
 systemctl status kube-scheduler --no-pager -l
+
+
+################################################################################
+# Create cluster role bindings
+################################################################################
+
+# Note that we only create these if they don't already exist. We also don't
+# worry about return status (using '|| true') since on first boot the masters
+# may try add the bindings at exactly the same time, and we don't want to
+# consider that race condition to be a failure case
+
+# Wait at least 10 seconds for everything to come up before continuing
+sleep $[($RANDOM % 10 + 10)]
+
+# Add a user binding and group binding; both seem to be required
+# Both the user 'kubelet-bootstrap' and group 'kubelet-bootstrap'
+# refer to the user/group stored the token.csv file
+
+echo "Creating bootstrapper cluster bindings. Ignore errors about binding"
+echo "not already existing below."
+
+if ! kubectl get clusterrolebinding kubelet-node-bootstrapper-user-binding; then
+  kubectl create clusterrolebinding kubelet-node-bootstrapper-user-binding \
+      --clusterrole=system:node-bootstrapper \
+      --user=kubelet-bootstrap
+fi
+
+# kubelet-bootstrap refers to the group in the associated token.csv file
+if ! kubectl get clusterrolebinding kubelet-node-bootstrapper-group-binding; then
+  kubectl create clusterrolebinding kubelet-node-bootstrapper-group-binding \
+    --clusterrole=system:node-bootstrapper \
+    --group=system:kubelet-bootstrap
+fi
